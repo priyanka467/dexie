@@ -1,7 +1,19 @@
 import React from 'react'
 import './App.css'
+import Dexie from 'dexie'
+import { useLiveQuery } from 'dexie-react-hooks';
+
+const db = new Dexie('todoApp');
+db.version(1).stores({
+  todos: '++id, task, completed, date'
+})
+const {todos} = db
 
 const App = () => {
+  const allItems = useLiveQuery(() => todos.toArray(), [])
+
+  
+  console.log("=====>", allItems)
   return (
     <div className="container">
       <h3 className="teal-text center-align">Todo App</h3>
